@@ -20,8 +20,9 @@ export default function (eleventyConfig) {
     compile: function () {
       return async function (data) {
         // noinspection JSUnresolvedReference
-        let content = await this.defaultRenderer(data);
-        return renderToString(content);
+        const content = await this.defaultRenderer(data);
+        const rendered = await renderToString(content);
+        return `<!doctype html>\n` + rendered;
       };
     },
   });
