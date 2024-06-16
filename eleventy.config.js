@@ -11,7 +11,23 @@ import pluginDrafts from "./eleventy.config.drafts.js";
 import pluginImages from "./eleventy.config.images.js";
 import EleventyHtmlBasePlugin from "@11ty/eleventy/src/Plugins/HtmlBasePlugin.js";
 
+import "tsx/esm";
+import { renderToString } from "jsx-async-runtime";
+
 export default function (eleventyConfig) {
+  eleventyConfig.addExtension(["11ty.jsx", "11ty.ts", "11ty.tsx"], {
+    key: "11ty.js",
+    compile: function () {
+      return async function (data) {
+        // noinspection JSUnresolvedReference
+        let content = await this.defaultRenderer(data);
+        return renderToString(content);
+      };
+    },
+  });
+
+  eleventyConfig.addTemplateFormats("11ty.ts,11ty.tsx");
+
   // Copy the contents of the `public` folder to the output folder
   // For example, `./public/css/` ends up in `_site/css/`
   eleventyConfig.addPassthroughCopy({
