@@ -7,9 +7,9 @@ import pluginRss from "@11ty/eleventy-plugin-rss";
 import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import pluginBundle from "@11ty/eleventy-plugin-bundle";
 import pluginNavigation from "@11ty/eleventy-navigation";
-import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 import pluginDrafts from "./eleventy.config.drafts.js";
 import pluginImages from "./eleventy.config.images.js";
+import EleventyHtmlBasePlugin from "@11ty/eleventy/src/Plugins/HtmlBasePlugin.js";
 
 export default function (eleventyConfig) {
   // Copy the contents of the `public` folder to the output folder
