@@ -23,6 +23,7 @@ export type RenderData = {
   metadata: Metadata;
   getBundle(name: string): string;
   eleventyNavigation(entries: HeaderEntry[]): HeaderEntry[];
+  htmlBaseUrl(url: string): string;
 };
 
 export type BaseLayoutProps = {
@@ -33,6 +34,7 @@ export type BaseLayoutProps = {
   metadata: Metadata;
   page: EleventyPage;
   title?: string;
+  currentBuildDate: string;
 };
 
 export function BaseLayout(
@@ -45,10 +47,15 @@ export function BaseLayout(
     eleventy,
     page,
     metadata,
+    currentBuildDate,
   }: BaseLayoutProps,
 ): JSX.Element {
   const css = this.getBundle("css");
   const entries = this.eleventyNavigation(collections.all);
+  // TODO
+  // const safeContent = this.safe(content);
+  const baseURL = this.htmlBaseUrl(page.url);
+
   return (
     <html lang={metadata.language}>
       <head>
@@ -87,7 +94,13 @@ export function BaseLayout(
           pageURL={page.url}
         />
 
-        {content}
+        <main id="skip">{content}</main>
+
+        <footer>
+          <div style={{ display: "none" }}>
+            This page {baseURL} was built on {currentBuildDate}
+          </div>
+        </footer>
       </body>
     </html>
   );

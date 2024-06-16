@@ -2,11 +2,11 @@ import { expect, test } from "vitest";
 import {
   BaseLayout,
   BaseLayoutProps,
-  RenderData,
-  Metadata,
   Eleventy,
+  Metadata,
 } from "./BaseLayout.11ty";
 import { renderToString } from "jsx-async-runtime";
+import { screen } from "@testing-library/dom";
 
 const eleventy: Eleventy = {
   generator: "9.9.9a1",
@@ -18,14 +18,27 @@ const metadata: Metadata = {
   title: "My Site",
 };
 
+const entries = [
+  { title: "Title 1", url: "http://localhost:3000/one" },
+  { title: "Title 2", url: "http://localhost:3000/two" },
+];
 const commonProps: BaseLayoutProps = {
-  content: "<p>This is <em>the body</em></p>",
+  content: "<p>This is <em>the em body</em></p>",
   eleventy,
   metadata,
+  page: {
+    url: "http://localhost:3000/two",
+  },
+  collections: {
+    all: entries,
+  },
+  currentBuildDate: "2020-20-20",
 };
 
 const thisContext = {
-  getBundle: (name: string) => "body {}",
+  getBundle: () => "body {}",
+  eleventyNavigation: () => entries,
+  htmlBaseUrl: () => "/some-url",
 };
 
 const BoundBaseLayout = BaseLayout.bind(thisContext);
@@ -60,6 +73,15 @@ test("render BaseLayout defaults", async () => {
   // CSS Bundle
   const style = document.querySelector("style") as HTMLStyleElement;
   expect(style.innerText).toBe("body {}");
+
+  // Inclusion of the header
+  expect(screen.getByRole("banner")).toBeTruthy();
+
+  // The main element should have content
+  expect(screen.getByText("the em body")).toBeTruthy();
+
+  // Inclusion of the footer
+  expect(screen.getByRole("contentinfo")).toBeTruthy();
 });
 
 test("render MainLayout pre-page options", async () => {

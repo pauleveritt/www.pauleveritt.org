@@ -9,11 +9,7 @@ export type HeaderProps = {
   entries: HeaderEntry[];
 };
 
-export function Header({
-  metadataTitle,
-  pageURL,
-  entries,
-}: HeaderProps): JSX.Element {
+export function Header({ metadataTitle, pageURL, entries }: HeaderProps) {
   return (
     <header>
       <a href="/" class="home-link">
