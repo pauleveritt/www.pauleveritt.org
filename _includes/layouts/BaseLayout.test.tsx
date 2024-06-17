@@ -7,6 +7,7 @@ import {
 } from "./BaseLayout.11ty";
 import { renderToString } from "jsx-async-runtime";
 import { screen } from "@testing-library/dom";
+import { h } from "preact";
 
 const eleventy: Eleventy = {
   generator: "9.9.9a1",
