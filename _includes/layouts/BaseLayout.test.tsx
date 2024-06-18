@@ -5,9 +5,8 @@ import {
   Eleventy,
   Metadata,
 } from "./BaseLayout.11ty";
-import { renderToString } from "jsx-async-runtime";
 import { screen } from "@testing-library/dom";
-import { h } from "preact";
+import { renderToStringAsync } from "preact-render-to-string";
 
 const eleventy: Eleventy = {
   generator: "9.9.9a1",
@@ -24,7 +23,7 @@ const entries = [
   { title: "Title 2", url: "http://localhost:3000/two" },
 ];
 const commonProps: BaseLayoutProps = {
-  content: "<p>This is <em>the em body</em></p>",
+  content: "<p>This is <em>THE</em> body.</p>",
   eleventy,
   metadata,
   page: {
@@ -46,7 +45,7 @@ const BoundBaseLayout = BaseLayout.bind(thisContext);
 
 test("render BaseLayout defaults", async () => {
   const result = <BoundBaseLayout {...commonProps} />;
-  document.body.innerHTML = await renderToString(result);
+  document.body.innerHTML = await renderToStringAsync(result);
   expect(document.title).toBe(metadata.title);
 
   // Description
@@ -79,7 +78,7 @@ test("render BaseLayout defaults", async () => {
   expect(screen.getByRole("banner")).toBeTruthy();
 
   // The main element should have content
-  expect(screen.getByText("the em body")).toBeTruthy();
+  expect(screen.getByText("THE")).toBeTruthy();
 
   // Inclusion of the footer
   expect(screen.getByRole("contentinfo")).toBeTruthy();
@@ -93,7 +92,7 @@ test("render MainLayout pre-page options", async () => {
       description="This Description"
     />
   );
-  document.body.innerHTML = await renderToString(result);
+  document.body.innerHTML = await renderToStringAsync(result);
   const description = document.querySelector(
     "meta[name='description']",
   ) as HTMLMetaElement;

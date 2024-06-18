@@ -49,11 +49,9 @@ export function BaseLayout(
     metadata,
     currentBuildDate,
   }: BaseLayoutProps,
-): JSX.Element {
+) {
   const css = this.getBundle("css");
   const entries = this.eleventyNavigation(collections.all);
-  // TODO
-  // const safeContent = this.safe(content);
   const baseURL = this.htmlBaseUrl(page.url);
 
   return (
@@ -94,8 +92,7 @@ export function BaseLayout(
           pageURL={page.url}
         />
 
-        <main id="skip">{content}</main>
-
+        <main id="skip" dangerouslySetInnerHTML={{ __html: content }} />
         <footer>
           <div style={{ display: "none" }}>
             This page {baseURL} was built on {currentBuildDate}

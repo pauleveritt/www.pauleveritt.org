@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
-import { renderToString } from "jsx-async-runtime";
 import { screen } from "@testing-library/dom";
 import { Header, HeaderProps } from "./Header";
+import { renderToStringAsync } from "preact-render-to-string";
 
 test("render heading with default name", async () => {
   const props: HeaderProps = {
@@ -13,7 +13,7 @@ test("render heading with default name", async () => {
     ],
   };
   const result = <Header {...props} />;
-  document.body.innerHTML = await renderToString(result);
+  document.body.innerHTML = await renderToStringAsync(result);
   expect(screen.getByText(props.metadataTitle)).to.exist;
   const entries = screen.getAllByRole("link") as HTMLAnchorElement[];
   expect(entries[1].href).toBe(props.entries[0].url);

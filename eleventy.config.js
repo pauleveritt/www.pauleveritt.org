@@ -1,3 +1,5 @@
+import "tsx/esm";
+
 import { DateTime } from "luxon";
 
 import markdownItAnchor from "markdown-it-anchor";
@@ -11,8 +13,7 @@ import pluginDrafts from "./eleventy.config.drafts.js";
 import pluginImages from "./eleventy.config.images.js";
 import EleventyHtmlBasePlugin from "@11ty/eleventy/src/Plugins/HtmlBasePlugin.js";
 
-import "tsx/esm";
-import { renderToString } from "jsx-async-runtime";
+import { renderToStringAsync } from "preact-render-to-string";
 
 export default function (eleventyConfig) {
   eleventyConfig.addExtension(["11ty.jsx", "11ty.ts", "11ty.tsx"], {
@@ -21,7 +22,7 @@ export default function (eleventyConfig) {
       return async function (data) {
         // noinspection JSUnresolvedReference
         const content = await this.defaultRenderer(data);
-        const rendered = await renderToString(content);
+        const rendered = await renderToStringAsync(content);
         return `<!doctype html>\n` + rendered;
       };
     },
