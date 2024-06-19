@@ -1,5 +1,16 @@
 # TODO
 
-- Switch from content to children
-- The `safe` filter isn't on `this` in JavaScript Templates
--
+## Now
+
+## Next
+
+- Speed up Vitest
+- Get all uses of `home.njk` converted over
+
+## Soon
+
+## Eventually
+
+- `new Eleventy` tests
+
+## Done
