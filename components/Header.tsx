@@ -1,4 +1,4 @@
-export type HeaderEntry = {
+export type NavEntry = {
   title: string;
   url: string;
 };
@@ -6,10 +6,10 @@ export type HeaderEntry = {
 export type HeaderProps = {
   metadataTitle: string;
   pageURL: string;
-  entries: HeaderEntry[];
+  navEntries: NavEntry[];
 };
 
-export function Header({ metadataTitle, pageURL, entries }: HeaderProps) {
+export function Header({ metadataTitle, pageURL, navEntries }: HeaderProps) {
   return (
     <header>
       <a href="/" class="home-link">
@@ -19,13 +19,13 @@ export function Header({ metadataTitle, pageURL, entries }: HeaderProps) {
       <nav>
         <h2 class="visually-hidden">Top level navigation menu</h2>
         <ul class="nav">
-          {entries.map((entry) => (
+          {navEntries.map((naventry) => (
             <li class="nav-item">
               <a
-                href={entry.url}
-                aria-current={entry.url == pageURL ? "page" : false}
+                href={naventry.url}
+                aria-current={naventry.url == pageURL ? "page" : false}
               >
-                {entry.title}
+                {naventry.title}
               </a>
             </li>
           ))}

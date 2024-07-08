@@ -1,10 +1,5 @@
 import { expect, test } from "vitest";
-import {
-  BaseLayout,
-  BaseLayoutProps,
-  Eleventy,
-  Metadata,
-} from "./BaseLayout.11ty";
+import { BaseLayout, BaseLayoutProps, Eleventy, Metadata } from "./BaseLayout";
 import { screen } from "@testing-library/dom";
 import { renderToStringAsync } from "preact-render-to-string";
 
@@ -33,19 +28,20 @@ const commonProps: BaseLayoutProps = {
     all: entries,
   },
   currentBuildDate: "2020-20-20",
+  css: "body {}",
 };
 
 const thisContext = {
-  getBundle: () => "body {}",
-  eleventyNavigation: () => entries,
-  htmlBaseUrl: () => "/some-url",
+  useBundle: (content: string) => [".pdq {font-weight: bold}", null],
+  shortcodes: {
+    eleventyNavigation: () => entries,
+    htmlBaseUrl: () => "/some-url",
+  },
 };
 
-const BoundBaseLayout = BaseLayout.bind(thisContext);
-
-test("render BaseLayout defaults", async () => {
-  const result = <BoundBaseLayout {...commonProps} />;
-  document.body.innerHTML = await renderToStringAsync(result);
+test("BaseLayout for HTML string from Markdown body", async () => {
+  const result = <BaseLayout {...commonProps} />;
+  document.body.innerHTML = await renderToStringAsync(result, thisContext);
   expect(document.title).toBe(metadata.title);
 
   // Description
@@ -72,7 +68,7 @@ test("render BaseLayout defaults", async () => {
 
   // CSS Bundle
   const style = document.querySelector("style") as HTMLStyleElement;
-  expect(style.innerText).toBe("body {}");
+  expect(style.innerText).toBe(".pdq {font-weight: bold}");
 
   // Inclusion of the header
   expect(screen.getByRole("banner")).toBeTruthy();
@@ -86,16 +82,32 @@ test("render BaseLayout defaults", async () => {
 
 test("render MainLayout pre-page options", async () => {
   const result = (
-    <BoundBaseLayout
+    <BaseLayout
       {...commonProps}
       title="This Title"
       description="This Description"
     />
   );
-  document.body.innerHTML = await renderToStringAsync(result);
+  document.body.innerHTML = await renderToStringAsync(result, thisContext);
   const description = document.querySelector(
     "meta[name='description']",
   ) as HTMLMetaElement;
   expect(document.title).toBe("This Title - " + metadata.title);
   expect(description.content).toBe("This Description");
+});
+
+test("No CSS passed in means no script tag", async () => {
+  const { css, ...theseProps } = { ...commonProps };
+  const result = <BaseLayout {...theseProps} />;
+  document.body.innerHTML = await renderToStringAsync(result, thisContext);
+  const style = document.querySelector("style") as HTMLStyleElement;
+  expect(style).toBeUndefined;
+});
+
+test("Children instead of HTML string from Markdown", async () => {
+  const children = <div>The Children</div>;
+  const { content, ...theseProps } = { ...commonProps, children };
+  const result = <BaseLayout {...theseProps} />;
+  document.body.innerHTML = await renderToStringAsync(result, thisContext);
+  expect(screen.getByText("The Children")).toBeDefined();
 });

@@ -2,10 +2,12 @@
 
 ## Now
 
+- Move posts.njk and friends over
+
 ## Next
 
 - Speed up Vitest
-- Get all uses of `home.njk` converted over
+- Pass `context.data` down and have `Heading` pull it in
 
 ## Soon
 
@@ -14,3 +16,6 @@
 - `new Eleventy` tests
 
 ## Done
+
+-
+- Get all uses of `home.njk` converted over

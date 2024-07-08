@@ -1,4 +1,12 @@
-import { Header, HeaderEntry } from "../../components/Header";
+/*
+
+The base for other layouts. Is never used directly, hence it does
+not have `.11ty` in its name.
+
+ */
+import { navigation } from "@11ty/eleventy-navigation";
+import { Header } from "./Header";
+import { ComponentChildren } from "preact";
 
 export type Metadata = {
   description: string;
@@ -18,16 +26,22 @@ export type EleventyPage = {
   url: string;
 };
 
-export type RenderData = {
-  eleventy: Eleventy;
-  metadata: Metadata;
-  getBundle(name: string): string;
-  eleventyNavigation(entries: HeaderEntry[]): HeaderEntry[];
-  htmlBaseUrl(url: string): string;
+export type ThisContext = {
+  context: {
+    data: {
+      page: {
+        url: string;
+      };
+    };
+    shortcodes: {
+      htmlBaseUrl(url: string): string;
+    };
+    useBundle: (content: string) => [string, (content: string) => void];
+  };
 };
-
 export type BaseLayoutProps = {
-  content: string;
+  children?: ComponentChildren;
+  content?: string;
   description?: string;
   collections: EleventyCollections;
   eleventy: Eleventy;
@@ -35,11 +49,13 @@ export type BaseLayoutProps = {
   page: EleventyPage;
   title?: string;
   currentBuildDate: string;
+  css?: string;
 };
 
 export function BaseLayout(
-  this: RenderData,
+  this: ThisContext,
   {
+    children,
     content,
     description,
     title,
@@ -50,9 +66,9 @@ export function BaseLayout(
     currentBuildDate,
   }: BaseLayoutProps,
 ) {
-  const css = this.getBundle("css");
-  const entries = this.eleventyNavigation(collections.all);
-  const baseURL = this.htmlBaseUrl(page.url);
+  const entries = navigation.find(collections.all);
+  const baseURL = this.context.shortcodes.htmlBaseUrl(page.url);
+  const [css, setCss] = this.context.useBundle("css");
 
   return (
     <html lang={metadata.language}>
@@ -77,8 +93,8 @@ export function BaseLayout(
           title={metadata.title}
         />
         <meta name="generator" content={eleventy.generator} />
-        <style>{css}</style>
         <link rel="stylesheet" href="/css/index.css" type="text/css" />
+        {css && <style>{css}</style>}
         <link rel="icon" href="/img/favicon.svg" />
       </head>
       <body>
@@ -87,12 +103,15 @@ export function BaseLayout(
         </a>
 
         <Header
-          entries={entries}
+          navEntries={entries}
           metadataTitle={metadata.title}
           pageURL={page.url}
         />
 
-        <main id="skip" dangerouslySetInnerHTML={{ __html: content }} />
+        {content && (
+          <main id="skip" dangerouslySetInnerHTML={{ __html: content }} />
+        )}
+        {children && <main id="skip">{children}</main>}
         <footer>
           <div style={{ display: "none" }}>
             This page {baseURL} was built on {currentBuildDate}

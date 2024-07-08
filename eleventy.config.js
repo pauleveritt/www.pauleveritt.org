@@ -1,7 +1,5 @@
 import "tsx/esm";
 
-import { DateTime } from "luxon";
-
 import markdownItAnchor from "markdown-it-anchor";
 
 import pluginRss from "@11ty/eleventy-plugin-rss";
@@ -15,14 +13,37 @@ import EleventyHtmlBasePlugin from "@11ty/eleventy/src/Plugins/HtmlBasePlugin.js
 
 import { renderToStringAsync } from "preact-render-to-string";
 
+function makeUseBundle(eleventyConfig, url) {
+  /* Return a hook-like function for working with 11ty bundles. */
+
+  return (bundleName) => {
+    const bundle = eleventyConfig.javascriptFunctions[bundleName];
+
+    // Return a getter and setter tuple
+    return [
+      eleventyConfig.javascriptFunctions.getBundle(bundleName, null, url),
+      (content) => bundle(content, null, url),
+    ];
+  };
+}
+
 export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(pluginBundle);
+  eleventyConfig.addBundle("css");
+
   eleventyConfig.addExtension(["11ty.jsx", "11ty.ts", "11ty.tsx"], {
     key: "11ty.js",
     compile: function () {
       return async function (data) {
         // noinspection JSUnresolvedReference
         const content = await this.defaultRenderer(data);
-        const rendered = await renderToStringAsync(content);
+        const useBundle = makeUseBundle(eleventyConfig, data.page.url);
+        const rendered = await renderToStringAsync(content, {
+          config: eleventyConfig,
+          data,
+          shortcodes: eleventyConfig.javascriptFunctions,
+          useBundle,
+        });
         return `<!doctype html>\n` + rendered;
       };
     },
@@ -54,20 +75,6 @@ export default function (eleventyConfig) {
   });
   eleventyConfig.addPlugin(pluginNavigation);
   eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
-  eleventyConfig.addPlugin(pluginBundle);
-
-  // Filters
-  eleventyConfig.addFilter("readableDate", (dateObj, format, zone) => {
-    // Formatting tokens for Luxon: https://moment.github.io/luxon/#/formatting?id=table-of-tokens
-    return DateTime.fromJSDate(dateObj, { zone: zone || "utc" }).toFormat(
-      format || "dd LLLL yyyy",
-    );
-  });
-
-  eleventyConfig.addFilter("htmlDateString", (dateObj) => {
-    // dateObj input: https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-date-string
-    return DateTime.fromJSDate(dateObj, { zone: "utc" }).toFormat("yyyy-LL-dd");
-  });
 
   // Get the first `n` elements of a collection.
   eleventyConfig.addFilter("head", (array, n) => {
