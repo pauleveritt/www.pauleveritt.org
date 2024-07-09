@@ -14,14 +14,14 @@ export type PostProps = {
 };
 
 export function Post({ title, postDate, postUrl, url }: PostProps) {
-  const liClass = postUrl == url ? " postlist-item-active" : "postlist-item";
+  const liClass = postUrl == url ? " postlist-item-active" : "";
   const thisDate = new Date(postDate);
   const dt = DateTime.fromJSDate(thisDate, { zone: "utc" }).toFormat(
     "yyyy-LL-dd",
   );
   const rd = readdableDate(thisDate, "LLLL yyyy");
   return (
-    <li class="postlist-item">
+    <li class={`postlist-item${liClass}`}>
       <a href={postUrl} class="postlist-link">
         {title ? title : <code>{postUrl}</code>}
       </a>

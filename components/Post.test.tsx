@@ -20,7 +20,7 @@ test("Post URL and URL are not equal so not active", async () => {
   const result = <Post {...props} />;
   document.body.innerHTML = await renderToStringAsync(result);
   const li = screen.getByRole("listitem");
-  expect(li.className).toEqual("");
+  expect(li.className).toEqual("postlist-item");
 });
 
 test("Post URL equals URL active", async () => {
@@ -28,7 +28,7 @@ test("Post URL equals URL active", async () => {
   const result = <Post {...theseProps} />;
   document.body.innerHTML = await renderToStringAsync(result);
   const li = screen.getByRole("listitem");
-  expect(li.className).toEqual(" postlist-item-active");
+  expect(li.className).toEqual("postlist-item postlist-item-active");
 });
 
 test("HTML and eadable date format", async () => {

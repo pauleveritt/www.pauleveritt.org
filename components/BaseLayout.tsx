@@ -4,15 +4,11 @@ The base for other layouts. Is never used directly, hence it does
 not have `.11ty` in its name.
 
  */
-import { navigation } from "@11ty/eleventy-navigation";
 import { Header } from "./Header";
 import { ComponentChildren } from "preact";
 
 export type BaseLayoutContext = {
   context: {
-    collections: {
-      all: any[];
-    };
     data: {};
     eleventy: {
       generator: string;
@@ -43,10 +39,7 @@ export function BaseLayout(
   this: BaseLayoutContext,
   { children, content, description, title }: BaseLayoutProps,
 ) {
-  const { collections, eleventy, metadata, page, shortcodes, useBundle } =
-    this.context;
-  // TODO Move this to Header and let it pull in the collection.all
-  const navEntries = navigation.find(collections.all);
+  const { eleventy, metadata, page, shortcodes, useBundle } = this.context;
   const baseURL = shortcodes.htmlBaseUrl(page.url);
   const [css, setCss] = useBundle("css");
   const currentBuildDate = new Date().toISOString();
@@ -83,11 +76,7 @@ export function BaseLayout(
           Skip to main content
         </a>
 
-        <Header
-          navEntries={navEntries}
-          metadataTitle={metadata.title}
-          pageURL={page.url}
-        />
+        <Header metadataTitle={metadata.title} pageURL={page.url} />
 
         {content && (
           <main id="skip" dangerouslySetInnerHTML={{ __html: content }} />
