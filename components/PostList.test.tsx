@@ -9,7 +9,7 @@ const thisContext = {
   useBundle: (content: string) => ["", useCss],
 };
 
-const postItems = [
+export const postItems = [
   { date: "2024", url: "/1", data: { title: "One" } },
   { date: "2022", url: "/2", data: { title: "Two" } },
   { date: "2023", url: "/3", data: { title: "Three" } },

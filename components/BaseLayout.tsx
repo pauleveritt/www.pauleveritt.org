@@ -8,30 +8,22 @@ import { navigation } from "@11ty/eleventy-navigation";
 import { Header } from "./Header";
 import { ComponentChildren } from "preact";
 
-export type Metadata = {
-  description: string;
-  language: string;
-  title: string;
-};
-
-export type Eleventy = {
-  generator: string;
-};
-
-export type EleventyCollections = {
-  all: any[];
-};
-
-export type EleventyPage = {
-  url: string;
-};
-
-export type ThisContext = {
+export type BaseLayoutContext = {
   context: {
-    data: {
-      page: {
-        url: string;
-      };
+    collections: {
+      all: any[];
+    };
+    data: {};
+    eleventy: {
+      generator: string;
+    };
+    metadata: {
+      description: string;
+      language: string;
+      title: string;
+    };
+    page: {
+      url: string;
     };
     shortcodes: {
       htmlBaseUrl(url: string): string;
@@ -43,32 +35,21 @@ export type BaseLayoutProps = {
   children?: ComponentChildren;
   content?: string;
   description?: string;
-  collections: EleventyCollections;
-  eleventy: Eleventy;
-  metadata: Metadata;
-  page: EleventyPage;
   title?: string;
-  currentBuildDate: string;
   css?: string;
 };
 
 export function BaseLayout(
-  this: ThisContext,
-  {
-    children,
-    content,
-    description,
-    title,
-    collections,
-    eleventy,
-    page,
-    metadata,
-    currentBuildDate,
-  }: BaseLayoutProps,
+  this: BaseLayoutContext,
+  { children, content, description, title }: BaseLayoutProps,
 ) {
-  const entries = navigation.find(collections.all);
-  const baseURL = this.context.shortcodes.htmlBaseUrl(page.url);
-  const [css, setCss] = this.context.useBundle("css");
+  const { collections, eleventy, metadata, page, shortcodes, useBundle } =
+    this.context;
+  // TODO Move this to Header and let it pull in the collection.all
+  const navEntries = navigation.find(collections.all);
+  const baseURL = shortcodes.htmlBaseUrl(page.url);
+  const [css, setCss] = useBundle("css");
+  const currentBuildDate = new Date().toISOString();
 
   return (
     <html lang={metadata.language}>
@@ -103,7 +84,7 @@ export function BaseLayout(
         </a>
 
         <Header
-          navEntries={entries}
+          navEntries={navEntries}
           metadataTitle={metadata.title}
           pageURL={page.url}
         />

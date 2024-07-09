@@ -1,5 +1,7 @@
 import "tsx/esm";
 
+import { DateTime } from "luxon";
+
 import markdownItAnchor from "markdown-it-anchor";
 
 import pluginRss from "@11ty/eleventy-plugin-rss";
@@ -39,8 +41,12 @@ export default function (eleventyConfig) {
         const content = await this.defaultRenderer(data);
         const useBundle = makeUseBundle(eleventyConfig, data.page.url);
         const rendered = await renderToStringAsync(content, {
+          collections: data.collections,
           config: eleventyConfig,
           data,
+          eleventy: data.eleventy,
+          metadata: data.metadata,
+          page: data.page,
           shortcodes: eleventyConfig.javascriptFunctions,
           useBundle,
         });
@@ -56,6 +62,19 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     "./public/": "/",
     "./node_modules/prismjs/themes/prism-okaidia.css": "/css/prism-okaidia.css",
+  });
+
+  // Filters
+  eleventyConfig.addFilter("readableDate", (dateObj, format, zone) => {
+    // Formatting tokens for Luxon: https://moment.github.io/luxon/#/formatting?id=table-of-tokens
+    return DateTime.fromJSDate(dateObj, { zone: zone || "utc" }).toFormat(
+      format || "dd LLLL yyyy",
+    );
+  });
+
+  eleventyConfig.addFilter("htmlDateString", (dateObj) => {
+    // dateObj input: https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-date-string
+    return DateTime.fromJSDate(dateObj, { zone: "utc" }).toFormat("yyyy-LL-dd");
   });
 
   // Run Eleventy when these files change:

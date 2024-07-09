@@ -1,70 +1,64 @@
 import { expect, test } from "vitest";
-import { BaseLayout, BaseLayoutProps, Eleventy, Metadata } from "./BaseLayout";
+import { BaseLayout, BaseLayoutProps } from "./BaseLayout";
 import { screen } from "@testing-library/dom";
 import { renderToStringAsync } from "preact-render-to-string";
 
-const eleventy: Eleventy = {
-  generator: "9.9.9a1",
-};
-
-const metadata: Metadata = {
-  description: "Site description",
-  language: "en",
-  title: "My Site",
-};
-
-const entries = [
-  { title: "Title 1", url: "http://localhost:3000/one" },
-  { title: "Title 2", url: "http://localhost:3000/two" },
-];
-const commonProps: BaseLayoutProps = {
-  content: "<p>This is <em>THE</em> body.</p>",
-  eleventy,
-  metadata,
+const thisContext = {
+  collections: {
+    all: [],
+  },
+  eleventy: {
+    generator: "9.9.9a1",
+  },
+  metadata: {
+    description: "Site description",
+    language: "en",
+    title: "My Site",
+  },
   page: {
     url: "http://localhost:3000/two",
   },
-  collections: {
-    all: entries,
-  },
-  currentBuildDate: "2020-20-20",
-  css: "body {}",
-};
-
-const thisContext = {
   useBundle: (content: string) => [".pdq {font-weight: bold}", null],
   shortcodes: {
-    eleventyNavigation: () => entries,
+    eleventyNavigation: () => [
+      { title: "Title 1", url: "http://localhost:3000/one" },
+      { title: "Title 2", url: "http://localhost:3000/two" },
+    ],
     htmlBaseUrl: () => "/some-url",
   },
+};
+
+const commonProps: BaseLayoutProps = {
+  content: "<p>This is <em>THE</em> body.</p>",
+  css: "body {}",
 };
 
 test("BaseLayout for HTML string from Markdown body", async () => {
   const result = <BaseLayout {...commonProps} />;
   document.body.innerHTML = await renderToStringAsync(result, thisContext);
-  expect(document.title).toBe(metadata.title);
+  expect(document.title).toBe(thisContext.metadata.title);
 
   // Description
   const description = document.querySelector(
     "meta[name='description']",
   ) as HTMLMetaElement;
-  expect(description.content).toBe(metadata.description);
+  expect(description.content).toBe(thisContext.metadata.description);
 
   // Feed links
   const atom = document.querySelector(
     "link[type='application/atom+xml']",
   ) as HTMLLinkElement;
-  expect(atom.title).toBe(metadata.title);
+  expect(atom.title).toBe(thisContext.metadata.title);
   const jsonFeed = document.querySelector(
     "link[type='application/json']",
   ) as HTMLLinkElement;
-  expect(jsonFeed.title).toBe(metadata.title);
+  expect(jsonFeed.title).toBe(thisContext.metadata.title);
 
   // Generator
   const generator = document.querySelector(
     "meta[name='generator']",
   ) as HTMLMetaElement;
-  expect(generator.content).toBe(eleventy.generator);
+  expect(generator.content).toBe(thisContext.eleventy.generator);
 
   // CSS Bundle
   const style = document.querySelector("style") as HTMLStyleElement;
@@ -92,7 +86,7 @@ test("render MainLayout pre-page options", async () => {
   const description = document.querySelector(
     "meta[name='description']",
   ) as HTMLMetaElement;
-  expect(document.title).toBe("This Title - " + metadata.title);
+  expect(document.title).toBe("This Title - " + thisContext.metadata.title);
   expect(description.content).toBe("This Description");
 });
 
