@@ -1,6 +1,5 @@
 import { BaseLayout } from "../components/BaseLayout";
-import { JSXInternal } from "preact/src/jsx";
-import { PostList } from "../components/PostList";
+import { PostItem, PostList } from "../components/PostList";
 
 function head(array: any[], n: number): any[] {
   if (!Array.isArray(array) || array.length === 0) {
@@ -13,14 +12,12 @@ function head(array: any[], n: number): any[] {
   return array.slice(0, n);
 }
 
-export type IndexPageContext = {};
-
 export type IndexPageData = {
   description: string;
   content: string;
   title: string;
   collections: {
-    posts: any[];
+    posts: PostItem[];
   };
 };
 
@@ -34,7 +31,7 @@ export default class IndexPage {
     };
   }
 
-  render(this: IndexPageContext, data: IndexPageData): JSXInternal.Element {
+  render(data: IndexPageData) {
     const numberOfLatestPostsToShow = 3;
     const { posts } = data.collections;
     const postsCount = posts.length;
