@@ -7,6 +7,5 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
   },
-  "include": ["content", "components"],
   "exclude": ["node_modules", "_site"]
 }
