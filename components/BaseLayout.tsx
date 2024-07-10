@@ -21,7 +21,7 @@ export type BaseLayoutContext = {
     page: {
       url: string;
     };
-    shortcodes: {
+    filters: {
       htmlBaseUrl(url: string): string;
     };
     useBundle: (content: string) => [string, (content: string) => void];
@@ -39,8 +39,9 @@ export function BaseLayout(
   this: BaseLayoutContext,
   { children, content, description, title }: BaseLayoutProps,
 ) {
-  const { eleventy, metadata, page, shortcodes, useBundle } = this.context;
-  const baseURL = shortcodes.htmlBaseUrl(page.url);
+  const tc = this.context;
+  const { filters, eleventy, metadata, page, useBundle } = this.context;
+  const baseURL = filters.htmlBaseUrl(page.url);
   const [css, setCss] = useBundle("css");
   const currentBuildDate = new Date().toISOString();
 

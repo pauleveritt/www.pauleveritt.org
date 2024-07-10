@@ -7,6 +7,7 @@ export default defineConfig({
       "./content/**/*.test.tsx",
       "./_includes/**/*.test.ts*",
       "./components/**/*.test.ts*",
+      "./tests/**/*.test.ts*",
     ],
   },
 });

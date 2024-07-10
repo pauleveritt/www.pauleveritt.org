@@ -1,7 +1,6 @@
 import "tsx/esm";
 
 import { DateTime } from "luxon";
-import { jsxToString } from "jsx-async-runtime";
 
 import markdownItAnchor from "markdown-it-anchor";
 
@@ -19,11 +18,11 @@ function makeUseBundle(eleventyConfig, url) {
   /* Return a hook-like function for working with 11ty bundles. */
 
   return (bundleName) => {
-    const bundle = eleventyConfig.javascriptFunctions[bundleName];
+    const bundle = eleventyConfig.javascript.functions[bundleName];
 
     // Return a getter and setter tuple
     return [
-      eleventyConfig.javascriptFunctions.getBundle(bundleName, null, url),
+      eleventyConfig.javascript.functions.getBundle(bundleName, null, url),
       (content) => bundle(content, null, url),
     ];
   };
@@ -42,7 +41,9 @@ export default function (eleventyConfig) {
         const useBundle = makeUseBundle(eleventyConfig, data.page.url);
         const context = {
           ...data,
-          ...eleventyConfig.javascriptFunctions,
+          filters: eleventyConfig.javascript.filters,
+          shortcodes: eleventyConfig.javascript.shortcodes,
+          pairedShortcodes: eleventyConfig.javascript.pairedShortcodes,
           config: eleventyConfig,
           content,
           useBundle,
