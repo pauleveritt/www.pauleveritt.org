@@ -1,59 +1,57 @@
 import { expect, test } from "vitest";
+import { Header, HeaderThis, NavEntry } from "./Header";
 import { screen } from "@testing-library/dom";
-import { Header, HeaderContext, HeaderProps } from "./Header";
+import { navigation } from "@11ty/eleventy-navigation";
 import { renderToStringAsync } from "preact-render-to-string";
 
-export const postItems = [
+const collectionsAll = [
   {
-    date: "2024",
-    url: "http://localhost:3000/1",
     data: {
-      page: {
-        url: "http://localhost:3000/1",
-      },
-      title: "One",
       eleventyNavigation: {
         key: "Home",
         order: 1,
+        url: "http://localhost:3000/1",
       },
     },
   },
   {
-    date: "2022",
-    url: "http://localhost:3000/2",
     data: {
-      page: {
-        url: "http://localhost:3000/2",
-      },
-      title: "Two",
       eleventyNavigation: {
         key: "Two",
         order: 2,
+        url: "http://localhost:3000/2",
       },
     },
   },
-  { date: "2023", url: "http://localhost:3000/3", data: { title: "Three" } },
 ];
 
+test("Eleventy Navigation Find", async () => {
+  const navEntries: NavEntry[] = navigation.find(collectionsAll);
+  expect(navEntries.length).toEqual(2);
+});
+
 test("render heading with default name", async () => {
-  const context: HeaderContext = {
+  const headerThis: HeaderThis = {
     context: {
       collections: {
-        all: postItems,
+        all: collectionsAll,
+      },
+      metadata: {
+        title: "My Site",
+      },
+      page: {
+        url: "http://localhost:3000/2",
       },
     },
   };
 
-  const props: HeaderProps = {
-    metadataTitle: "Some Site",
-    pageURL: "http://localhost:3000/2",
-  };
-  const result = <Header {...props} />;
-  document.body.innerHTML = await renderToStringAsync(result, context.context);
-  expect(screen.getByText(props.metadataTitle)).to.exist;
+  const result = <Header />;
+  const { context } = headerThis;
+  document.body.innerHTML = await renderToStringAsync(result, context);
+  expect(screen.getByText(context.metadata.title)).to.exist;
   const entries = screen.getAllByRole("link") as HTMLAnchorElement[];
-  expect(entries[1].href).toBe(postItems[0].url);
+  expect(entries[1].href).toBe(collectionsAll[0].data.eleventyNavigation.url);
   expect(entries[2].ariaCurrent).toBeUndefined;
-  expect(entries[2].href).toBe(postItems[1].url);
+  expect(entries[2].href).toBe(collectionsAll[1].data.eleventyNavigation.url);
   expect(entries[2].getAttribute("aria-current")).toBe("page");
 });

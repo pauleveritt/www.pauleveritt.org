@@ -18,7 +18,7 @@ const thisContext = {
   page: {
     url: "http://localhost:3000/two",
   },
-  useBundle: (content: string) => [".pdq {font-weight: bold}", null],
+  useBundle: () => [".pdq {font-weight: bold}", null],
   shortcodes: {
     eleventyNavigation: () => [
       { title: "Title 1", url: "http://localhost:3000/one" },
@@ -32,6 +32,11 @@ const commonProps: BaseLayoutProps = {
   content: "<p>This is <em>THE</em> body.</p>",
   css: "body {}",
 };
+
+test("Silence unused symbol complaints", async () => {
+  expect(thisContext.shortcodes.htmlBaseUrl).toBeTruthy;
+  expect(thisContext.useBundle).toBeTruthy;
+});
 
 test("BaseLayout for HTML string from Markdown body", async () => {
   const result = <BaseLayout {...commonProps} />;

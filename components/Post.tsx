@@ -1,29 +1,37 @@
 import { DateTime } from "luxon";
 
-export function readdableDate(dateObj, format, zone = "utc") {
+export function readableDate(dateObj: Date, format: string, zone = "utc") {
   return DateTime.fromJSDate(dateObj, { zone: zone || "utc" }).toFormat(
     format || "dd LLLL yyyy",
   );
 }
 
-export type PostProps = {
-  title: string;
-  postUrl: string;
-  postDate: string;
-  url: string;
+export type PostContext = {
+  context: {
+    page: {
+      url: string;
+    };
+  };
 };
 
-export function Post({ title, postDate, postUrl, url }: PostProps) {
-  const liClass = postUrl == url ? " postlist-item-active" : "";
-  const thisDate = new Date(postDate);
+export type PostProps = {
+  title: string;
+  url: string;
+  date: string;
+};
+
+export function Post(this: PostContext, { title, date, url }: PostProps) {
+  const pageUrl = this.context.page.url;
+  const liClass = url == pageUrl ? " postlist-item-active" : "";
+  const thisDate = new Date(date);
   const dt = DateTime.fromJSDate(thisDate, { zone: "utc" }).toFormat(
     "yyyy-LL-dd",
   );
-  const rd = readdableDate(thisDate, "LLLL yyyy");
+  const rd = readableDate(thisDate, "LLLL yyyy");
   return (
     <li class={`postlist-item${liClass}`}>
-      <a href={postUrl} class="postlist-link">
-        {title ? title : <code>{postUrl}</code>}
+      <a href={url} class="postlist-link">
+        {title ? title : <code>{url}</code>}
       </a>
       <time class="postlist-date" dateTime={dt}>
         {rd}

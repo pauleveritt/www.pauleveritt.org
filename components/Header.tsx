@@ -1,11 +1,22 @@
 import { navigation } from "@11ty/eleventy-navigation";
+import { NavigationItem } from "./commonTypes";
 
-import { PostItem } from "./PostList";
+type AllItem = {
+  data: {
+    eleventyNavigation: NavigationItem;
+  };
+};
 
-export type HeaderContext = {
+export type HeaderThis = {
   context: {
     collections: {
-      all: PostItem[];
+      all: AllItem[];
+    };
+    metadata: {
+      title: string;
+    };
+    page: {
+      url: string;
     };
   };
 };
@@ -15,20 +26,13 @@ export type NavEntry = {
   url: string;
 };
 
-export type HeaderProps = {
-  metadataTitle: string;
-  pageURL: string;
-};
-
-export function Header(
-  this: HeaderContext,
-  { metadataTitle, pageURL }: HeaderProps,
-) {
-  const navEntries: NavEntry[] = navigation.find(this.context.collections.all);
+export function Header(this: HeaderThis) {
+  const { collections, metadata, page } = this.context;
+  const navEntries: NavEntry[] = navigation.find(collections.all);
   return (
     <header>
       <a href="/" class="home-link">
-        {metadataTitle}
+        {metadata.title}
       </a>
 
       <nav>
@@ -38,7 +42,7 @@ export function Header(
             <li class="nav-item">
               <a
                 href={navEntry.url}
-                aria-current={navEntry.url == pageURL ? "page" : false}
+                aria-current={navEntry.url == page.url ? "page" : false}
               >
                 {navEntry.title}
               </a>

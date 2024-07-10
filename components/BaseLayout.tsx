@@ -76,7 +76,7 @@ export function BaseLayout(
           Skip to main content
         </a>
 
-        <Header metadataTitle={metadata.title} pageURL={page.url} />
+        <Header />
 
         {content && (
           <main id="skip" dangerouslySetInnerHTML={{ __html: content }} />

@@ -1,6 +1,7 @@
 import "tsx/esm";
 
 import { DateTime } from "luxon";
+import { jsxToString } from "jsx-async-runtime";
 
 import markdownItAnchor from "markdown-it-anchor";
 
@@ -12,7 +13,6 @@ import pluginNavigation from "@11ty/eleventy-navigation";
 import pluginDrafts from "./eleventy.config.drafts.js";
 import pluginImages from "./eleventy.config.images.js";
 import EleventyHtmlBasePlugin from "@11ty/eleventy/src/Plugins/HtmlBasePlugin.js";
-
 import { renderToStringAsync } from "preact-render-to-string";
 
 function makeUseBundle(eleventyConfig, url) {
@@ -40,16 +40,14 @@ export default function (eleventyConfig) {
         // noinspection JSUnresolvedReference
         const content = await this.defaultRenderer(data);
         const useBundle = makeUseBundle(eleventyConfig, data.page.url);
-        const rendered = await renderToStringAsync(content, {
-          collections: data.collections,
+        const context = {
+          ...data,
+          ...eleventyConfig.javascriptFunctions,
           config: eleventyConfig,
-          data,
-          eleventy: data.eleventy,
-          metadata: data.metadata,
-          page: data.page,
-          shortcodes: eleventyConfig.javascriptFunctions,
+          content,
           useBundle,
-        });
+        };
+        const rendered = await renderToStringAsync(content, context);
         return `<!doctype html>\n` + rendered;
       };
     },
