@@ -10,10 +10,8 @@ export type PostItem = {
   };
 };
 
-export type PostListContext = {
-  context: {
-    useBundle: (content: string) => [string, (content: string) => void];
-  };
+export type PostListThis = {
+  useBundle: (content: string) => [string, (content: string) => void];
 };
 
 export type PostListProps = {
@@ -22,11 +20,11 @@ export type PostListProps = {
 };
 
 export function PostList(
-  this: PostListContext,
+  this: PostListThis,
   { counter, postItems }: PostListProps,
 ) {
   const thisCounter = counter ? counter : postItems.length + 1;
-  const setCss = this.context.useBundle("css")[1];
+  const setCss = this.useBundle("css")[1];
   setCss(`.postlist { counter-reset: start-from ${thisCounter} }`);
   return (
     <ol reversed class="postlist">

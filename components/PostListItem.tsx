@@ -6,11 +6,9 @@ export function readableDate(dateObj: Date, format: string, zone = "utc") {
   );
 }
 
-export type PostContext = {
-  context: {
-    page: {
-      url: string;
-    };
+export type PostThis = {
+  page: {
+    url: string;
   };
 };
 
@@ -20,11 +18,8 @@ export type PostProps = {
   date: string;
 };
 
-export function PostListItem(
-  this: PostContext,
-  { title, date, url }: PostProps,
-) {
-  const pageUrl = this.context.page.url;
+export function PostListItem(this: PostThis, { title, date, url }: PostProps) {
+  const pageUrl = this.page.url;
   const liClass = url == pageUrl ? " postlist-item-active" : "";
   const thisDate = new Date(date);
   const dt = DateTime.fromJSDate(thisDate, { zone: "utc" }).toFormat(

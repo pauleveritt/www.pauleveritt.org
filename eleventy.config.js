@@ -12,7 +12,7 @@ import pluginNavigation from "@11ty/eleventy-navigation";
 import pluginDrafts from "./eleventy.config.drafts.js";
 import pluginImages from "./eleventy.config.images.js";
 import EleventyHtmlBasePlugin from "@11ty/eleventy/src/Plugins/HtmlBasePlugin.js";
-import { renderToStringAsync } from "preact-render-to-string";
+import { jsxToString } from "jsx-async-runtime";
 
 function makeUseBundle(eleventyConfig, url) {
   /* Return a hook-like function for working with 11ty bundles. */
@@ -48,7 +48,8 @@ export default function (eleventyConfig) {
           content,
           useBundle,
         };
-        const rendered = await renderToStringAsync(content, context);
+        // const rendered = await renderToStringAsync(content, context);
+        const rendered = await jsxToString.call(context, content);
         return `<!doctype html>\n` + rendered;
       };
     },

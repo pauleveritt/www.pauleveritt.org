@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { BaseLayout, BaseLayoutProps } from "./BaseLayout";
 import { screen } from "@testing-library/dom";
-import { renderToStringAsync } from "preact-render-to-string";
+import { jsxToString } from "jsx-async-runtime";
 
 const thisContext = {
   collections: {
@@ -38,7 +38,7 @@ test("Silence unused symbol complaints", async () => {
 
 test("BaseLayout for HTML string from Markdown body", async () => {
   const result = <BaseLayout {...commonProps} />;
-  document.body.innerHTML = await renderToStringAsync(result, thisContext);
+  document.body.innerHTML = await jsxToString.call(thisContext, result);
   expect(document.title).toBe(thisContext.metadata.title);
 
   // Description
@@ -85,7 +85,7 @@ test("render MainLayout pre-page options", async () => {
       description="This Description"
     />
   );
-  document.body.innerHTML = await renderToStringAsync(result, thisContext);
+  document.body.innerHTML = await jsxToString.call(thisContext, result);
   const description = document.querySelector(
     "meta[name='description']",
   ) as HTMLMetaElement;
@@ -96,15 +96,15 @@ test("render MainLayout pre-page options", async () => {
 test("No CSS passed in means no script tag", async () => {
   const { css, ...theseProps } = { ...commonProps };
   const result = <BaseLayout {...theseProps} />;
-  document.body.innerHTML = await renderToStringAsync(result, thisContext);
+  document.body.innerHTML = await jsxToString.call(thisContext, result);
   const style = document.querySelector("style") as HTMLStyleElement;
   expect(style).toBeUndefined;
 });
 
-test("Children instead of HTML string from Markdown", async () => {
+test("Children instead of HTML string from Markdown", async (jsxElement: any) => {
   const children = <div>The Children</div>;
   const { content, ...theseProps } = { ...commonProps, children };
   const result = <BaseLayout {...theseProps} />;
-  document.body.innerHTML = await renderToStringAsync(result, thisContext);
+  document.body.innerHTML = await jsxToString.call(thisContext, result);
   expect(screen.getByText("The Children")).toBeDefined();
 });

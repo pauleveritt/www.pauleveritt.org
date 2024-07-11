@@ -1,18 +1,16 @@
 import { expect, test, vi } from "vitest";
 import { screen } from "@testing-library/dom";
-import { renderToStringAsync } from "preact-render-to-string";
-import { PostItem, PostList, PostListContext, PostListProps } from "./PostList";
-import { PostContext } from "./PostListItem";
+import { PostItem, PostList, PostListProps, PostListThis } from "./PostList";
+import { PostThis } from "./PostListItem";
+import { jsxToString } from "jsx-async-runtime";
 
 const useCss = vi.fn();
 
-const postListContext: PostListContext & PostContext = {
-  context: {
-    page: {
-      url: "/hello",
-    },
-    useBundle: () => ["", useCss],
+const postListThis: PostListThis & PostThis = {
+  page: {
+    url: "/hello",
   },
+  useBundle: () => ["", useCss],
 };
 
 export const postItems: PostItem[] = [
@@ -27,10 +25,7 @@ const props: PostListProps = {
 
 test("render postlist with no counter", async () => {
   const result = <PostList {...props} />;
-  document.body.innerHTML = await renderToStringAsync(
-    result,
-    postListContext.context,
-  );
+  document.body.innerHTML = await jsxToString.call(postListThis, result);
   expect(screen.getByRole("list")).toBeTruthy();
   expect(useCss).toHaveBeenCalledWith(
     ".postlist { counter-reset: start-from 4 }",
@@ -40,10 +35,7 @@ test("render postlist with no counter", async () => {
 test("render postlist with a counter", async () => {
   const newProps = { counter: 100, ...props };
   const result = <PostList {...newProps} />;
-  document.body.innerHTML = await renderToStringAsync(
-    result,
-    postListContext.context,
-  );
+  document.body.innerHTML = await jsxToString.call(postListThis, result);
   expect(useCss).toHaveBeenCalledWith(
     ".postlist { counter-reset: start-from 100 }",
   );
@@ -51,9 +43,6 @@ test("render postlist with a counter", async () => {
 
 test("Reverse sort means last first", async () => {
   const result = <PostList {...props} />;
-  document.body.innerHTML = await renderToStringAsync(
-    result,
-    postListContext.context,
-  );
+  document.body.innerHTML = await jsxToString.call(postListThis, result);
   expect(screen.getAllByRole("link")[0].textContent).toEqual("Three");
 });

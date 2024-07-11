@@ -27,7 +27,7 @@
     "happy-dom": "^14.12.3",
     "luxon": "^3.4.4",
     "markdown-it-anchor": "^9.0.1",
-    "jsx-async-runtime": "^0.4.0",
+    "jsx-async-runtime": "^0.4.1",
     "preact": "^10.22.0",
     "preact-render-to-string": "^6.5.5",
     "prettier": "^3.3.2",

@@ -8,16 +8,14 @@ type AllItem = {
 };
 
 export type HeaderThis = {
-  context: {
-    collections: {
-      all: AllItem[];
-    };
-    metadata: {
-      title: string;
-    };
-    page: {
-      url: string;
-    };
+  collections: {
+    all: AllItem[];
+  };
+  metadata: {
+    title: string;
+  };
+  page: {
+    url: string;
   };
 };
 
@@ -27,7 +25,7 @@ export type NavEntry = {
 };
 
 export function Header(this: HeaderThis) {
-  const { collections, metadata, page } = this.context;
+  const { collections, metadata, page } = this;
   const navEntries: NavEntry[] = navigation.find(collections.all);
   return (
     <header>

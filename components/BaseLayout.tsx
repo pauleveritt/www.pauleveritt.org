@@ -8,22 +8,20 @@ import { Header } from "./Header";
 import { ComponentChildren } from "preact";
 
 export type BaseLayoutContext = {
-  context: {
-    data: {};
-    eleventy: {
-      generator: string;
-    };
-    metadata: {
-      description: string;
-      language: string;
-      title: string;
-    };
-    page: {
-      url: string;
-    };
-    htmlBaseUrl(url: string): string;
-    useBundle: (content: string) => [string, (content: string) => void];
+  data: {};
+  eleventy: {
+    generator: string;
   };
+  metadata: {
+    description: string;
+    language: string;
+    title: string;
+  };
+  page: {
+    url: string;
+  };
+  htmlBaseUrl(url: string): string;
+  useBundle: (content: string) => [string, (content: string) => void];
 };
 export type BaseLayoutProps = {
   children?: ComponentChildren;
@@ -37,7 +35,7 @@ export function BaseLayout(
   this: BaseLayoutContext,
   { children, content, description, title }: BaseLayoutProps,
 ) {
-  const { htmlBaseUrl, eleventy, metadata, page, useBundle } = this.context;
+  const { htmlBaseUrl, eleventy, metadata, page, useBundle } = this;
   const baseURL = htmlBaseUrl(page.url);
   const [css, setCss] = useBundle("css");
   const currentBuildDate = new Date().toISOString();
@@ -76,9 +74,7 @@ export function BaseLayout(
 
         <Header />
 
-        {content && (
-          <main id="skip" dangerouslySetInnerHTML={{ __html: content }} />
-        )}
+        {content && <main id="skip">{content}</main>}
         {children && <main id="skip">{children}</main>}
         <footer>
           <div style={{ display: "none" }}>
