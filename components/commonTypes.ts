@@ -13,6 +13,7 @@ export type CollectionItem = {
     metadata: {
       title: string;
     };
+    tags: string[];
   };
   page: {
     url: string;

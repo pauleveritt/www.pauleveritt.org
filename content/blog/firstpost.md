@@ -2,6 +2,8 @@
 title: Time to start blogging again
 description: It's been a while.
 date: 2024-05-26
+tags:
+  - first
 ---
 
 Hi, I'm Paul Everitt.

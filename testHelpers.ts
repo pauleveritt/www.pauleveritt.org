@@ -5,7 +5,11 @@ export async function getEleventyDoc(url: string) {
   /* Do an Eleventy run, get the url, and load string into document. */
   const elev = new Eleventy("./", "./_tests");
   const results = await elev.toJSON();
-  const { content } = results.find((e: { url: string }) => e.url === url);
+  const result = results.find((e: { url: string }) => e.url === url);
+  if (!result) {
+    throw new Error(`No URL found at "${url}"`);
+  }
+  const { content } = result;
 
   // Parse this to get the head and body
   const window = new Window();
