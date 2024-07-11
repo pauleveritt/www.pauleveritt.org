@@ -1,5 +1,5 @@
 ---
-title: Time to start blogging again.
+title: Time to start blogging again
 description: It's been a while.
 date: 2024-05-26
 ---
