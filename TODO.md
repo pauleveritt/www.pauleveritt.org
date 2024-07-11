@@ -2,11 +2,6 @@
 
 ## Now
 
-- Flatten shortcodes/filters
-- Refactor components/tests to not need BaseLayout
-- `Post` -> `PostItem`
-- `new Eleventy` tests
-
 ## Next
 
 - Convert `tags.njk`
@@ -26,3 +21,6 @@
 
 - Move posts.njk and friends over
 - Get all uses of `home.njk` converted over
+- Flatten shortcodes/filters
+- `Post` -> `PostItem`
+- Write site template tests that only use `Eleventy`

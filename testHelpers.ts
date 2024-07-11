@@ -1,0 +1,17 @@
+import Eleventy from "@11ty/eleventy/src/Eleventy";
+import { Window } from "happy-dom";
+
+export async function getEleventyDoc(url: string) {
+  /* Do an Eleventy run, get the url, and load string into document. */
+  const elev = new Eleventy("./", "./_tests");
+  const results = await elev.toJSON();
+  const { content } = results.find((e: { url: string }) => e.url === url);
+
+  // Parse this to get the head and body
+  const window = new Window();
+  const domParser = new window.DOMParser();
+  const newDocument = domParser.parseFromString(content, "text/html");
+
+  document.head.innerHTML = newDocument.head.innerHTML;
+  document.body.innerHTML = newDocument.body.innerHTML;
+}
