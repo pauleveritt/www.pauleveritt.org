@@ -2,6 +2,8 @@
 
 ## Now
 
+- Flatten shortcodes/filters
+- Refactor components/tests to not need BaseLayout
 - `Post` -> `PostItem`
 - `new Eleventy` tests
 

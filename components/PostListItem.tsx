@@ -20,7 +20,10 @@ export type PostProps = {
   date: string;
 };
 
-export function Post(this: PostContext, { title, date, url }: PostProps) {
+export function PostListItem(
+  this: PostContext,
+  { title, date, url }: PostProps,
+) {
   const pageUrl = this.context.page.url;
   const liClass = url == pageUrl ? " postlist-item-active" : "";
   const thisDate = new Date(date);

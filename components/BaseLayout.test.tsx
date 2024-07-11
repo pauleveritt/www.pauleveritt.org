@@ -19,13 +19,11 @@ const thisContext = {
     url: "http://localhost:3000/two",
   },
   useBundle: () => [".pdq {font-weight: bold}", null],
-  shortcodes: {
-    eleventyNavigation: () => [
-      { title: "Title 1", url: "http://localhost:3000/one" },
-      { title: "Title 2", url: "http://localhost:3000/two" },
-    ],
-    htmlBaseUrl: () => "/some-url",
-  },
+  eleventyNavigation: () => [
+    { title: "Title 1", url: "http://localhost:3000/one" },
+    { title: "Title 2", url: "http://localhost:3000/two" },
+  ],
+  htmlBaseUrl: () => "/some-url",
 };
 
 const commonProps: BaseLayoutProps = {
@@ -34,7 +32,7 @@ const commonProps: BaseLayoutProps = {
 };
 
 test("Silence unused symbol complaints", async () => {
-  expect(thisContext.shortcodes.htmlBaseUrl).toBeTruthy;
+  expect(thisContext.htmlBaseUrl).toBeTruthy;
   expect(thisContext.useBundle).toBeTruthy;
 });
 

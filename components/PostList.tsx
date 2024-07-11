@@ -1,4 +1,4 @@
-import { Post } from "./Post";
+import { PostListItem } from "./PostListItem";
 
 export type PostItem = {
   data: {
@@ -12,9 +12,6 @@ export type PostItem = {
 
 export type PostListContext = {
   context: {
-    filters: {
-      htmlDateString: (content: string) => string;
-    };
     useBundle: (content: string) => [string, (content: string) => void];
   };
 };
@@ -34,7 +31,7 @@ export function PostList(
   return (
     <ol reversed class="postlist">
       {postItems.reverse().map(({ data, page }) => (
-        <Post date={data.date} url={page.url} title={data.title} />
+        <PostListItem date={data.date} url={page.url} title={data.title} />
       ))}
     </ol>
   );

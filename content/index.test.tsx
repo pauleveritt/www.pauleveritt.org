@@ -18,9 +18,7 @@ export const context = {
   page: {
     url: "url",
   },
-  shortcodes: {
-    htmlBaseUrl: (url) => "url",
-  },
+  htmlBaseUrl: (url) => "url",
   useBundle: (content) => [
     "",
     () => {

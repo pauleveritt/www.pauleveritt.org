@@ -41,9 +41,9 @@ export default function (eleventyConfig) {
         const useBundle = makeUseBundle(eleventyConfig, data.page.url);
         const context = {
           ...data,
-          filters: eleventyConfig.javascript.filters,
-          shortcodes: eleventyConfig.javascript.shortcodes,
-          pairedShortcodes: eleventyConfig.javascript.pairedShortcodes,
+          ...eleventyConfig.javascript.filters,
+          ...eleventyConfig.javascript.shortcodes,
+          ...eleventyConfig.javascript.pairedShortcodes,
           config: eleventyConfig,
           content,
           useBundle,

@@ -2,15 +2,12 @@ import { expect, test, vi } from "vitest";
 import { screen } from "@testing-library/dom";
 import { renderToStringAsync } from "preact-render-to-string";
 import { PostItem, PostList, PostListContext, PostListProps } from "./PostList";
-import { PostContext } from "./Post";
+import { PostContext } from "./PostListItem";
 
 const useCss = vi.fn();
 
 const postListContext: PostListContext & PostContext = {
   context: {
-    filters: {
-      htmlDateString: () => "",
-    },
     page: {
       url: "/hello",
     },

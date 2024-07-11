@@ -21,9 +21,7 @@ export type BaseLayoutContext = {
     page: {
       url: string;
     };
-    filters: {
-      htmlBaseUrl(url: string): string;
-    };
+    htmlBaseUrl(url: string): string;
     useBundle: (content: string) => [string, (content: string) => void];
   };
 };
@@ -39,9 +37,8 @@ export function BaseLayout(
   this: BaseLayoutContext,
   { children, content, description, title }: BaseLayoutProps,
 ) {
-  const tc = this.context;
-  const { filters, eleventy, metadata, page, useBundle } = this.context;
-  const baseURL = filters.htmlBaseUrl(page.url);
+  const { htmlBaseUrl, eleventy, metadata, page, useBundle } = this.context;
+  const baseURL = htmlBaseUrl(page.url);
   const [css, setCss] = useBundle("css");
   const currentBuildDate = new Date().toISOString();
 

@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { screen } from "@testing-library/dom";
 import { renderToStringAsync } from "preact-render-to-string";
-import { Post, PostContext, PostProps } from "./Post";
+import { PostListItem, PostContext, PostProps } from "./PostListItem";
 
 const postContext: PostContext = {
   context: {
@@ -18,7 +18,7 @@ const props: PostProps = {
 };
 
 test("Post URL and URL are not equal so not active", async () => {
-  const result = <Post {...props} />;
+  const result = <PostListItem {...props} />;
   document.body.innerHTML = await renderToStringAsync(
     result,
     postContext.context,
@@ -30,7 +30,7 @@ test("Post URL and URL are not equal so not active", async () => {
 test("Post URL equals URL active", async () => {
   const thisContext = { ...postContext };
   thisContext.context.page.url = props.url;
-  const result = <Post {...props} />;
+  const result = <PostListItem {...props} />;
   document.body.innerHTML = await renderToStringAsync(
     result,
     thisContext.context,
@@ -40,7 +40,7 @@ test("Post URL equals URL active", async () => {
 });
 
 test("HTML and eadable date format", async () => {
-  const result = <Post {...props} />;
+  const result = <PostListItem {...props} />;
   document.body.innerHTML = await renderToStringAsync(
     result,
     postContext.context,
@@ -51,7 +51,7 @@ test("HTML and eadable date format", async () => {
 });
 
 test("Link text has title when provided", async () => {
-  const result = <Post {...props} />;
+  const result = <PostListItem {...props} />;
   document.body.innerHTML = await renderToStringAsync(
     result,
     postContext.context,
@@ -62,7 +62,7 @@ test("Link text has title when provided", async () => {
 test("Link text has code url when title not provided", async () => {
   const theseProps = { ...props };
   delete theseProps["title"];
-  const result = <Post {...theseProps} />;
+  const result = <PostListItem {...theseProps} />;
   document.body.innerHTML = await renderToStringAsync(
     result,
     postContext.context,
