@@ -1,7 +1,10 @@
 import { BaseLayout } from "../components/BaseLayout";
-import { PostItem } from "../components/PostList";
+import { PostItem, PostList } from "../components/PostList";
 
-export type TagPageData = {};
+export type TagPageData = {
+  collections: any;
+  tag: string;
+};
 
 export default class Tag {
   data() {
@@ -14,16 +17,23 @@ export default class Tag {
         addAllPagesToCollections: true,
       },
       eleventyComputed: {
-        title: `Tagged “{{ tag }}”`,
+        title: (data: TagPageData) => `Tagged “${data.tag}”`,
+        permalink: (data: TagPageData) => {
+          return `/tags/${data.tag}/`;
+        },
       },
-      // permalink: `permalink: /tags/{{ tag | slugify }}/`
     };
   }
 
-  render(data: TagPageData) {
+  render({ collections, tag }: TagPageData) {
+    const tagged = collections[tag];
     return (
       <BaseLayout>
-        <h1>Tagged</h1>
+        <h1>Tagged "{tag}"</h1>
+        <PostList postItems={tagged} />
+        <p>
+          See <a href="/tags/">all tags</a>.
+        </p>
       </BaseLayout>
     );
   }

@@ -5,7 +5,8 @@
     "moduleResolution": "Node",
     "skipLibCheck": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "jsx-async-runtime"
+    "jsxImportSource": "jsx-async-runtime",
+    "types": ["node"]
   },
   "exclude": ["node_modules", "_site"]
 }

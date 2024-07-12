@@ -31,7 +31,7 @@ test("Post URL equals URL active", async () => {
   expect(li.className).toEqual("postlist-item postlist-item-active");
 });
 
-test("HTML and eadable date format", async () => {
+test("HTML and readable date format", async () => {
   const result = <PostListItem {...props} />;
   document.body.innerHTML = await jsxToString.call(postContext, result);
   const time = screen.getByRole("time");
