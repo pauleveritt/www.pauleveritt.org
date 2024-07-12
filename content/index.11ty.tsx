@@ -40,7 +40,7 @@ export default class IndexPage {
     const postsList = head(posts, -numberOfLatestPostsToShow);
     const morePosts = postsCount - numberOfLatestPostsToShow;
     return (
-      <BaseLayout {...data}>
+      <BaseLayout>
         <h1>
           Latest {latestPostsCount} Post{latestPostsCount > 1 ? "s" : ""}
         </h1>

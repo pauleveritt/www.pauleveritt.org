@@ -21,7 +21,7 @@ export default class BlogPage {
     const { posts } = data.collections;
 
     return (
-      <BaseLayout {...data}>
+      <BaseLayout>
         <h1>Archive</h1>
         <PostList postItems={posts} />
       </BaseLayout>

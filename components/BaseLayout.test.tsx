@@ -3,7 +3,7 @@ import { BaseLayout, BaseLayoutProps } from "./BaseLayout";
 import { screen } from "@testing-library/dom";
 import { jsxToString } from "jsx-async-runtime";
 
-const thisContext = {
+const baseLayoutThis = {
   collections: {
     all: [],
   },
@@ -28,40 +28,39 @@ const thisContext = {
 
 const commonProps: BaseLayoutProps = {
   content: "<p>This is <em>THE</em> body.</p>",
-  css: "body {}",
 };
 
 test("Silence unused symbol complaints", async () => {
-  expect(thisContext.htmlBaseUrl).toBeTruthy;
-  expect(thisContext.useBundle).toBeTruthy;
+  expect(baseLayoutThis.htmlBaseUrl).toBeTruthy;
+  expect(baseLayoutThis.useBundle).toBeTruthy;
 });
 
 test("BaseLayout for HTML string from Markdown body", async () => {
   const result = <BaseLayout {...commonProps} />;
-  document.body.innerHTML = await jsxToString.call(thisContext, result);
-  expect(document.title).toBe(thisContext.metadata.title);
+  document.body.innerHTML = await jsxToString.call(baseLayoutThis, result);
+  expect(document.title).toBe(baseLayoutThis.metadata.title);
 
   // Description
   const description = document.querySelector(
     "meta[name='description']",
   ) as HTMLMetaElement;
-  expect(description.content).toBe(thisContext.metadata.description);
+  expect(description.content).toBe(baseLayoutThis.metadata.description);
 
   // Feed links
   const atom = document.querySelector(
     "link[type='application/atom+xml']",
   ) as HTMLLinkElement;
-  expect(atom.title).toBe(thisContext.metadata.title);
+  expect(atom.title).toBe(baseLayoutThis.metadata.title);
   const jsonFeed = document.querySelector(
     "link[type='application/json']",
   ) as HTMLLinkElement;
-  expect(jsonFeed.title).toBe(thisContext.metadata.title);
+  expect(jsonFeed.title).toBe(baseLayoutThis.metadata.title);
 
   // Generator
   const generator = document.querySelector(
     "meta[name='generator']",
   ) as HTMLMetaElement;
-  expect(generator.content).toBe(thisContext.eleventy.generator);
+  expect(generator.content).toBe(baseLayoutThis.eleventy.generator);
 
   // CSS Bundle
   const style = document.querySelector("style") as HTMLStyleElement;
@@ -78,33 +77,31 @@ test("BaseLayout for HTML string from Markdown body", async () => {
 });
 
 test("render MainLayout pre-page options", async () => {
-  const result = (
-    <BaseLayout
-      {...commonProps}
-      title="This Title"
-      description="This Description"
-    />
-  );
-  document.body.innerHTML = await jsxToString.call(thisContext, result);
+  const thisBaseLayoutThis = {
+    ...baseLayoutThis,
+    title: "This Title",
+    description: "This Description",
+  };
+  const result = <BaseLayout {...commonProps} />;
+  document.body.innerHTML = await jsxToString.call(thisBaseLayoutThis, result);
   const description = document.querySelector(
     "meta[name='description']",
   ) as HTMLMetaElement;
-  expect(document.title).toBe("This Title - " + thisContext.metadata.title);
+  expect(document.title).toBe("This Title - " + baseLayoutThis.metadata.title);
   expect(description.content).toBe("This Description");
 });
 
 test("No CSS passed in means no script tag", async () => {
-  const { css, ...theseProps } = { ...commonProps };
-  const result = <BaseLayout {...theseProps} />;
-  document.body.innerHTML = await jsxToString.call(thisContext, result);
+  const result = <BaseLayout />;
+  document.body.innerHTML = await jsxToString.call(baseLayoutThis, result);
   const style = document.querySelector("style") as HTMLStyleElement;
   expect(style).toBeUndefined;
 });
 
-test("Children instead of HTML string from Markdown", async (jsxElement: any) => {
+test("Children instead of HTML string from Markdown", async () => {
   const children = <div>The Children</div>;
-  const { content, ...theseProps } = { ...commonProps, children };
+  const theseProps = { ...commonProps, children };
   const result = <BaseLayout {...theseProps} />;
-  document.body.innerHTML = await jsxToString.call(thisContext, result);
+  document.body.innerHTML = await jsxToString.call(baseLayoutThis, result);
   expect(screen.getByText("The Children")).toBeDefined();
 });

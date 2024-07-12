@@ -31,7 +31,7 @@ export default class Tags {
     const tags = filterTagList(getAllTags(data.collections.all));
     const { slugify } = this;
     return (
-      <BaseLayout {...data}>
+      <BaseLayout>
         <h1>Tags</h1>
         <ul>
           {tags.map((tag) => {

@@ -5,10 +5,10 @@ not have `.11ty` in its name.
 
  */
 import { Header } from "./Header";
-import { ComponentChildren } from "preact";
 
 export type BaseLayoutContext = {
-  data: {};
+  description?: string;
+  title?: string;
   eleventy: {
     generator: string;
   };
@@ -23,21 +23,28 @@ export type BaseLayoutContext = {
   htmlBaseUrl(url: string): string;
   useBundle: (content: string) => [string, (content: string) => void];
 };
+
 export type BaseLayoutProps = {
-  children?: ComponentChildren;
+  children?: JSX.Children;
   content?: string;
-  description?: string;
-  title?: string;
-  css?: string;
 };
 
 export function BaseLayout(
   this: BaseLayoutContext,
-  { children, content, description, title }: BaseLayoutProps,
+  { children, content }: BaseLayoutProps,
 ) {
-  const { htmlBaseUrl, eleventy, metadata, page, useBundle } = this;
+  const {
+    description,
+    title,
+    htmlBaseUrl,
+    eleventy,
+    metadata,
+    page,
+    useBundle,
+  } = this;
+
   const baseURL = htmlBaseUrl(page.url);
-  const [css, setCss] = useBundle("css");
+  const css = useBundle("css")[0];
   const currentBuildDate = new Date().toISOString();
 
   return (

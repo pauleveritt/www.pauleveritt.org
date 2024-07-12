@@ -45,9 +45,9 @@ export default function (eleventyConfig) {
           ...eleventyConfig.javascript.shortcodes,
           ...eleventyConfig.javascript.pairedShortcodes,
           config: eleventyConfig,
-          content,
           useBundle,
         };
+
         // const rendered = await renderToStringAsync(content, context);
         const rendered = await jsxToString.call(context, content);
         return `<!doctype html>\n` + rendered;

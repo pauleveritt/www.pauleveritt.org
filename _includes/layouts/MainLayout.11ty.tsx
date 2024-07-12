@@ -8,9 +8,12 @@ Preact context split.
  */
 import { BaseLayout } from "../../components/BaseLayout";
 
-export function MainLayout(data: any) {
+export type MainLayoutProps = {
+  content: string;
+};
+export function MainLayout({ content }: MainLayoutProps) {
   return (
-    <BaseLayout {...data}>
+    <BaseLayout content={content}>
       <h1>Hello</h1>
     </BaseLayout>
   );

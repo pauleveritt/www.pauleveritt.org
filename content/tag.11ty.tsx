@@ -1,11 +1,7 @@
 import { BaseLayout } from "../components/BaseLayout";
 import { PostItem } from "../components/PostList";
 
-export type TagPageData = {
-  collections: {
-    posts: PostItem[];
-  };
-};
+export type TagPageData = {};
 
 export default class Tag {
   data() {
@@ -25,10 +21,8 @@ export default class Tag {
   }
 
   render(data: TagPageData) {
-    const { posts } = data.collections;
-
     return (
-      <BaseLayout {...data}>
+      <BaseLayout>
         <h1>Tagged</h1>
       </BaseLayout>
     );
