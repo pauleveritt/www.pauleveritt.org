@@ -9,14 +9,12 @@ Preact context split.
 import { BaseLayout } from "../../components/BaseLayout";
 
 export type MainLayoutProps = {
-  content: string;
+  children?: JSX.Children;
+  content?: string;
 };
-export function MainLayout({ content }: MainLayoutProps) {
-  return (
-    <BaseLayout content={content}>
-      <h1>Hello</h1>
-    </BaseLayout>
-  );
+
+export function MainLayout({ children, content }: MainLayoutProps) {
+  return <BaseLayout content={content}>{children}</BaseLayout>;
 }
 
 export const render = MainLayout;
