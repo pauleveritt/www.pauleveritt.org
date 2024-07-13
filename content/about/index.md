@@ -1,5 +1,5 @@
 ---
-layout: layouts/base.njk
+layout: layouts/MainLayout.11ty.tsx
 eleventyNavigation:
   key: About Me
   order: 3
