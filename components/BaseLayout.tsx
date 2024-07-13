@@ -6,7 +6,7 @@ not have `.11ty` in its name.
  */
 import { Header } from "./Header";
 
-export type BaseLayoutContext = {
+export type BaseLayoutThis = {
   description?: string;
   title?: string;
   eleventy: {
@@ -30,7 +30,7 @@ export type BaseLayoutProps = {
 };
 
 export function BaseLayout(
-  this: BaseLayoutContext,
+  this: BaseLayoutThis,
   { children, content }: BaseLayoutProps,
 ) {
   const {

@@ -6,8 +6,6 @@
 
 ## Soon
 
-- Switch to `jsx-async-runtime`
-
 ## Eventually
 
 - Speed up Vitest
@@ -23,3 +21,4 @@
 - Convert `tags-list.njk`
 - Write `layout/Post.11ty.tsx` and convert `blog/blog.11tydata.js`
 - Pass `context.data` down and have `Heading` pull it in
+- Switch to `jsx-async-runtime`
