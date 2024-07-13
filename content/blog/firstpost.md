@@ -1,7 +1,7 @@
 ---
 title: Time to start blogging again
 description: It's been a while.
-date: 2024-05-26
+date: 2024-07-12
 tags:
   - first
 ---

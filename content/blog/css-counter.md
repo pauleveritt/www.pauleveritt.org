@@ -1,7 +1,7 @@
 ---
 title: Manage Numbering with CSS Counters
 description: It's like a CSS variable, but different!
-date: 2024-05-28
+date: 2024-07-13
 ---
 
 Content in here.
