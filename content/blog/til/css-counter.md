@@ -5,3 +5,7 @@ date: 2024-07-13
 ---
 
 Content in here.
+
+```javascript
+const x = () => 99;
+```

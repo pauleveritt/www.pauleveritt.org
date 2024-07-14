@@ -107,8 +107,8 @@ test("BaseLayout for HTML string from Markdown body", async () => {
   expect(slugify).toHaveBeenCalledTimes(5);
 
   // Commas join tags
-  const continuations = screen.getAllByTitle("Continuation");
-  expect(continuations).toHaveLength(3);
+  const continuations = screen.getAllByText(",");
+  expect(continuations).toHaveLength(4);
   expect(continuations[0].textContent).toEqual(", ");
 
   // Navigate between posts
