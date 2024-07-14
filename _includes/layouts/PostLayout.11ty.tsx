@@ -9,7 +9,7 @@ export type PostLayoutThis = {
   getPreviousCollectionItem: (posts: CollectionItem[]) => CollectionItem;
   getNextCollectionItem: (posts: CollectionItem[]) => CollectionItem;
   slugify: (url: string) => string;
-  css: (content: string) => void;
+  css: (content: string, bucket: string | null, url: string) => void;
 };
 
 export type PostLayoutData = {
@@ -20,6 +20,9 @@ export type PostLayoutData = {
   date: string;
   tags: string[];
   title: string;
+  page: {
+    url: string;
+  };
 };
 
 export default class PostLayout {
@@ -30,7 +33,7 @@ export default class PostLayout {
   }
 
   render(this: PostLayoutThis, data: PostLayoutData) {
-    const { collections, content, date, tags, title } = data;
+    const { collections, content, date, tags, title, page } = data;
     const okaidia = readFileSync(
       "node_modules/prismjs/themes/prism-okaidia.css",
       { encoding: "utf8", flag: "r" },
@@ -39,8 +42,8 @@ export default class PostLayout {
       encoding: "utf8",
       flag: "r",
     });
-    this.css(okaidia);
-    this.css(diff);
+    this.css(okaidia, null, page.url);
+    this.css(diff, null, page.url);
 
     const thisDate = new Date(date);
     const dt = DateTime.fromJSDate(thisDate, { zone: "utc" }).toFormat(

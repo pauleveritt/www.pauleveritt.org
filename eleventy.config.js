@@ -30,7 +30,7 @@ function makeUseBundle(eleventyConfig, url) {
 
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginBundle);
-  eleventyConfig.addBundle("css");
+  // eleventyConfig.addBundle("css");
 
   eleventyConfig.addExtension(["11ty.jsx", "11ty.ts", "11ty.tsx"], {
     key: "11ty.js",

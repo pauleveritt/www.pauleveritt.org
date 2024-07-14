@@ -43,6 +43,9 @@ const getNextCollectionItem = vi.fn();
 
 const baseLayoutThis = {
   title: "This Post",
+  page: {
+    url: "http://localhost:3000/two",
+  },
   collections: {
     all: [],
     posts: [],
@@ -54,9 +57,6 @@ const baseLayoutThis = {
     description: "Site description",
     language: "en",
     title: "My Site",
-  },
-  page: {
-    url: "http://localhost:3000/two",
   },
   getPreviousCollectionItem,
   getNextCollectionItem,
@@ -78,6 +78,9 @@ const postLayoutData: PostLayoutData = {
   date: "2022-12-01",
   tags: ["first", "second", "third", "fourth", "fifth"],
   title: "This Post",
+  page: {
+    url: "http://localhost:3000/two",
+  },
 };
 
 test("Silence unused symbol complaints", async () => {
