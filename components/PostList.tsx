@@ -28,7 +28,7 @@ export function PostList(
   setCss(`.postlist { counter-reset: start-from ${thisCounter} }`);
   return (
     <ol reversed class="postlist">
-      {postItems.reverse().map(({ data, page }) => (
+      {postItems.toReversed().map(({ data, page }) => (
         <PostListItem date={data.date} url={page.url} title={data.title} />
       ))}
     </ol>

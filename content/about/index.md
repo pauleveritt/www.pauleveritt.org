@@ -1,8 +1,9 @@
 ---
+title: About Me
 layout: layouts/MainLayout.11ty.tsx
 eleventyNavigation:
-  key: About Me
-  order: 3
+  key: About
+  order: 4
 ---
 
 # About Me

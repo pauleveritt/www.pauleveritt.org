@@ -30,7 +30,7 @@ export type PostLayoutData = {
 export default class PostLayout {
   data() {
     return {
-      title: "Post XXX",
+      // title: "Post XXX",
     };
   }
 

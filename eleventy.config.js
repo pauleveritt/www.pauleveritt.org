@@ -82,6 +82,7 @@ export default function (eleventyConfig) {
 
   // Watch content images for the image pipeline.
   eleventyConfig.addWatchTarget("content/**/*.{svg,webp,png,jpeg}");
+  eleventyConfig.addWatchTarget("./components/");
 
   // App plugins
   eleventyConfig.addPlugin(pluginDrafts);

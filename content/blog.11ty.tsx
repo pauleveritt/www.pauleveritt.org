@@ -12,7 +12,7 @@ export default class BlogPage {
     return {
       eleventyNavigation: {
         key: "Archive",
-        order: 2,
+        order: 3,
       },
     };
   }

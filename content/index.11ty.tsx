@@ -42,7 +42,8 @@ export default class IndexPage {
     return (
       <BaseLayout>
         <h1>
-          Latest {latestPostsCount} Post{latestPostsCount > 1 ? "s" : ""}
+          Latest {latestPostsCount > 1 ? latestPostsCount : ""} Post
+          {latestPostsCount > 1 ? "s" : ""}
         </h1>
         <PostList postItems={postsList} />
         {morePosts > 0 && (
