@@ -1,15 +1,29 @@
 import Eleventy from "@11ty/eleventy/src/Eleventy";
 import { Window } from "happy-dom";
 
-export async function getEleventyDoc(url: string) {
-  /* Do an Eleventy run, get the url, and load string into document. */
+type EleventyResult = {
+  url: string;
+  content: string;
+};
+
+export type EleventyPages = {
+  [key: string]: string;
+};
+
+export async function generateSite(): Promise<EleventyPages> {
   const elev = new Eleventy("./", "./_tests");
   const results = await elev.toJSON();
-  const result = results.find((e: { url: string }) => e.url === url);
-  if (!result) {
+  return Object.fromEntries(
+    results.map((result: EleventyResult) => [result.url, result.content]),
+  );
+}
+
+export async function getEleventyDoc(results: EleventyPages, url: string) {
+  /* Do an Eleventy run, get the url, and load string into document. */
+  const content = results[url];
+  if (!content) {
     throw new Error(`No URL found at "${url}"`);
   }
-  const { content } = result;
 
   // Parse this to get the head and body
   const window = new Window();

@@ -8,6 +8,7 @@ export default defineConfig({
       "./_includes/**/*.test.ts*",
       "./components/**/*.test.ts*",
       "./tests/**/*.test.ts*",
+      "./src/**/*.test.ts*",
     ],
   },
 });
