@@ -10,8 +10,9 @@ import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import pluginBundle from "@11ty/eleventy-plugin-bundle";
 import pluginNavigation from "@11ty/eleventy-navigation";
 import pluginDrafts from "./eleventy.config.drafts.js";
-import pluginImages from "./eleventy.config.images.js";
+// import pluginImages from "./eleventy.config.images.js";
 import EleventyHtmlBasePlugin from "@11ty/eleventy/src/Plugins/HtmlBasePlugin.js";
+import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import { jsxToString } from "jsx-async-runtime";
 
 function makeUseBundle(eleventyConfig, url) {
@@ -29,6 +30,16 @@ function makeUseBundle(eleventyConfig, url) {
 }
 
 export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
+    // which file extensions to process
+    extensions: "html",
+    formats: ["webp", "jpeg"],
+    defaultAttributes: {
+      loading: "lazy",
+      decoding: "async",
+    },
+  });
+  // -------------
   eleventyConfig.addPlugin(pluginBundle);
   // eleventyConfig.addBundle("css");
 
@@ -86,7 +97,7 @@ export default function (eleventyConfig) {
 
   // App plugins
   eleventyConfig.addPlugin(pluginDrafts);
-  eleventyConfig.addPlugin(pluginImages);
+  // eleventyConfig.addPlugin(pluginImages);
 
   // Official plugins
   eleventyConfig.addPlugin(pluginRss);
