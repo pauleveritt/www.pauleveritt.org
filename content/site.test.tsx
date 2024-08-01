@@ -17,18 +17,26 @@ test("Site renders", async () => {
   // );
 });
 
+test("Home page", async () => {
+  await getEleventyDoc(siteResults, "/til/");
+  expect(screen.getByText(`Latest Post in "Today I Learned"`)).toBeTruthy;
+  expect(document.head.innerHTML).toContain(".postlist {");
+});
+
 test("Today I Learned template renders", async () => {
   await getEleventyDoc(siteResults, "/til/");
   expect(screen.getByText(`Latest Post in "Today I Learned"`)).toBeTruthy;
+  expect(document.head.innerHTML).toContain(".postlist {");
 });
 
-test("Tag template renders", async () => {
+test("Tags template renders", async () => {
   await getEleventyDoc(siteResults, "/tags/");
   expect(screen.getByText("Tags")).toBeTruthy();
   expect(screen.getByText("first")).toBeTruthy;
+  expect(document.head.innerHTML).not.toContain(".postlist {");
 });
 
-test("Tag template renders", async () => {
+test("Single tag template renders", async () => {
   await getEleventyDoc(siteResults, "/tags/first/");
   expect(screen.getByText(`Tagged "first"`)).toBeTruthy();
   expect(screen.getByText(`Time to start blogging again`)).toBeTruthy();
@@ -41,4 +49,5 @@ test("Blog template renders", async () => {
   expect(screen.getAllByText("Time to start blogging again")).toBeTruthy;
   expect(screen.getAllByText("July 2024")).toBeTruthy;
   expect(screen.getAllByText("Manage Numbering with CSS Counters")).toBeTruthy;
+  expect(document.head.innerHTML).toContain(".postlist {");
 });
