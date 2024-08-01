@@ -1,4 +1,4 @@
-import Eleventy from "@11ty/eleventy/src/Eleventy";
+import Eleventy from "@11ty/eleventy";
 import { Window } from "happy-dom";
 
 type EleventyResult = {
